@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation" {{#equal active 'home'}}class="active"{{/equal}}><a href="/">Home</a></li>
+        <li role="presentation" {{#equal active 'messages'}}class="active"{{/equal}}><a href="/messages">Messages</a></li>
+        <li role="presentation" {{#equal active 'friends'}}class="active"{{/equal}}><a href="/friends">Friends</a></li>
+      </ul>
+    </div>
+    <div class="col-md-8">
+
+      <form action="/messages/create" method="post">
+        <div class="form-group">
+          <label for="friends">Friends</label>
+          <div class="input-group">
+            <div class="input-group-addon">@</div>
+            <input type="text" id="friends" placeholder="friend's username" class="form-control">
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="button">Find Friend</button>
+            </span>
+          </div>
+        </div>
+      </form>
+
+      {{#each conversation}}
+      <a href="/messages/convo/{{friend}}"><h3>{{friend}}</h3></a>
+      {{else}}
+      <p>No conversations! Create one now!</p>
+      {{/each}}
+
+    </div>
+  </div>
+</div>
