@@ -8,15 +8,15 @@
       </ul>
     </div>
     <div class="col-md-9">
-      
+
       <h4>Friends</h4>
-      
+
       <div class="list-group">
         {{#each friend}}
-        <a class="list-group-item" href="/messages/create/{{id}}">{{friend}}</a>
+        <a class="list-group-item" href="/messages/create/{{id}}">{{username}}</a>
         {{/each}}
       </div>
-      
+
       {{#each conversation}}
       <a href="/messages/conversation/{{id}}"><h3>{{friend}}</h3></a>
       {{else}}

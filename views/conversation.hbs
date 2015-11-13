@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation" {{#equal active 'home'}}class="active"{{/equal}}><a href="/">Home</a></li>
+        <li role="presentation" {{#equal active 'messages'}}class="active"{{/equal}}><a href="/messages">Messages</a></li>
+        <li role="presentation" {{#equal active 'friends'}}class="active"{{/equal}}><a href="/friends">Friends</a></li>
+        <li role="presentation"><a href="/auth/logout">Logout</a></li>
+      </ul>
+    </div>
+    <div class="col-md-9">
+
+      <h4>{{conversation.friend}}</h4>
+
+      <ul class="list-group" id="result">
+      </ul>
+
+      <form action="/messages/add/{{conversation._id}}" id="message" method="post">
+        <div class="input-group">
+          <input type="text" class="form-control" name="content" id="content" placeholder="New message">
+          <span class="input-group-btn">
+            <button class="btn btn-info" type="submit">Send</button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+$(window).load(function(event) {
+    $.ajax({
+      url: "/messages/receive/{{conversation._id}}"
+    }).done(function( data ) {
+        var messages = data.messages;
+        console.log(messages);
+        for (var i = 0; i < messages.length; i++) {
+            $('#result').append('<li class="list-group-item">' + messages[i].content + '</li>');
+        }
+    });
+});
+
+$( "#message" ).submit(function( event ) {
+
+  // Stop form from submitting normally
+  event.preventDefault();
+
+  // Get some values from elements on the page:
+  var $form = $( this ),
+    term = $form.find( "input[name='content']" ).val(),
+    url = $form.attr( "action" );
+
+  // Send the data using post
+  var posting = $.post( url, { content: term } );
+
+  $form.find( "input[name='content']" ).val("");
+
+  // Put the results in a div
+  posting.done(function(data) {
+      var messages = data.messages;
+      var i = messages.length -1;
+      var message = data.messages[i].content;
+      
+      $('#result').append('<li class="list-group-item">' + message + '</li>');
+  });
+});
+</script>
